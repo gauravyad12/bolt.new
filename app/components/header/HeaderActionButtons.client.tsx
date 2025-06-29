@@ -10,13 +10,47 @@ interface HeaderActionButtonsProps {}
 
 export function HeaderActionButtons({}: HeaderActionButtonsProps) {
   const showWorkbench = useStore(workbenchStore.showWorkbench);
-  const { showChat } = useStore(chatStore);
+  const { showChat, mode } = useStore(chatStore);
   const [showSettings, setShowSettings] = useState(false);
 
   const canHideChat = showWorkbench || !showChat;
 
+  const toggleChatMode = () => {
+    chatStore.setKey('mode', mode === 'agent' ? 'general' : 'agent');
+  };
+
   return (
     <div className="flex items-center gap-2">
+      {/* Chat Mode Toggle */}
+      <div className="flex items-center gap-1 bg-bolt-elements-background-depth-2 border border-bolt-elements-borderColor rounded-lg p-1">
+        <button
+          onClick={toggleChatMode}
+          className={classNames(
+            'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200',
+            {
+              'bg-bolt-elements-item-backgroundAccent text-bolt-elements-item-contentAccent shadow-sm': mode === 'agent',
+              'text-bolt-elements-textSecondary hover:text-bolt-elements-textPrimary hover:bg-bolt-elements-item-backgroundActive': mode !== 'agent',
+            }
+          )}
+        >
+          <div className="i-ph:robot text-lg" />
+          Agent
+        </button>
+        <button
+          onClick={toggleChatMode}
+          className={classNames(
+            'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200',
+            {
+              'bg-bolt-elements-item-backgroundAccent text-bolt-elements-item-contentAccent shadow-sm': mode === 'general',
+              'text-bolt-elements-textSecondary hover:text-bolt-elements-textPrimary hover:bg-bolt-elements-item-backgroundActive': mode !== 'general',
+            }
+          )}
+        >
+          <div className="i-ph:chat-circle text-lg" />
+          Chat
+        </button>
+      </div>
+
       <IconButton
         icon="i-ph:gear"
         title="Settings"
