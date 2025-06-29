@@ -3,27 +3,20 @@ import { ClientOnly } from 'remix-utils/client-only';
 import { BaseChat } from '~/components/chat/BaseChat';
 import { Chat } from '~/components/chat/Chat.client';
 import { Header } from '~/components/header/Header';
-import { AuthWrapper } from '~/components/auth/AuthWrapper';
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'Bolt' }, { name: 'description', content: 'Talk with Bolt, an AI assistant from StackBlitz' }];
+  return [{ title: 'Waf' }, { name: 'description', content: 'Talk with Waf, an AI assistant' }];
 };
 
 export const loader = ({ context }: LoaderFunctionArgs) => {
-  return json({
-    ENV: {
-      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: context.cloudflare.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-    },
-  });
+  return json({});
 };
 
 export default function Index() {
   return (
-    <AuthWrapper>
-      <div className="flex flex-col h-full w-full">
-        <Header />
-        <ClientOnly fallback={<BaseChat />}>{() => <Chat />}</ClientOnly>
-      </div>
-    </AuthWrapper>
+    <div className="flex flex-col h-full w-full">
+      <Header />
+      <ClientOnly fallback={<BaseChat />}>{() => <Chat />}</ClientOnly>
+    </div>
   );
 }
