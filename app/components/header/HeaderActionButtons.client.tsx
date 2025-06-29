@@ -10,10 +10,14 @@ interface HeaderActionButtonsProps {}
 
 export function HeaderActionButtons({}: HeaderActionButtonsProps) {
   const showWorkbench = useStore(workbenchStore.showWorkbench);
-  const { showChat } = useStore(chatStore);
+  const { showChat, mode } = useStore(chatStore);
   const [showSettings, setShowSettings] = useState(false);
 
   const canHideChat = showWorkbench || !showChat;
+
+  const toggleMode = () => {
+    chatStore.setKey('mode', mode === 'agent' ? 'general' : 'agent');
+  };
 
   return (
     <div className="flex items-center gap-2">
@@ -23,6 +27,27 @@ export function HeaderActionButtons({}: HeaderActionButtonsProps) {
         onClick={() => setShowSettings(true)}
         className="text-bolt-elements-item-contentDefault hover:text-bolt-elements-item-contentActive"
       />
+
+      {/* Chat Mode Toggle */}
+      <button
+        onClick={toggleMode}
+        className={classNames(
+          'flex items-center gap-2 px-3 py-1.5 text-sm rounded-md border transition-all duration-200',
+          {
+            'bg-bolt-elements-button-primary-background border-bolt-elements-borderColorActive text-bolt-elements-button-primary-text': mode === 'agent',
+            'bg-bolt-elements-button-secondary-background border-bolt-elements-borderColor text-bolt-elements-button-secondary-text hover:bg-bolt-elements-button-secondary-backgroundHover': mode === 'general',
+          }
+        )}
+        title={`Switch to ${mode === 'agent' ? 'general' : 'agent'} mode`}
+      >
+        <div className={classNames('text-base', {
+          'i-ph:robot': mode === 'agent',
+          'i-ph:chat-circle': mode === 'general',
+        })} />
+        <span className="font-medium">
+          {mode === 'agent' ? 'Agent' : 'Chat'}
+        </span>
+      </button>
       
       <div className="flex border border-bolt-elements-borderColor rounded-md overflow-hidden">
         <Button

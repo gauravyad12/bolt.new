@@ -4,6 +4,7 @@ import { CONTINUE_PROMPT } from '~/lib/.server/llm/prompts';
 import { streamText, type Messages, type StreamingOptions } from '~/lib/.server/llm/stream-text';
 import SwitchableStream from '~/lib/.server/llm/switchable-stream';
 import type { AIProvider } from '~/types/ai';
+import type { ChatMode } from '~/lib/stores/chat';
 
 export async function action(args: ActionFunctionArgs) {
   return chatAction(args);
@@ -15,13 +16,15 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
     provider = 'anthropic', 
     apiKey, 
     baseUrl, 
-    modelId 
+    modelId,
+    mode = 'agent'
   } = await request.json<{ 
     messages: Messages;
     provider?: AIProvider;
     apiKey?: string;
     baseUrl?: string;
     modelId?: string;
+    mode?: ChatMode;
   }>();
 
   // Use environment API key as fallback
@@ -59,6 +62,7 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
           apiKey: finalApiKey,
           baseUrl,
           modelId,
+          mode,
           options,
         });
 
@@ -73,6 +77,7 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
       apiKey: finalApiKey,
       baseUrl,
       modelId,
+      mode,
       options,
     });
 
