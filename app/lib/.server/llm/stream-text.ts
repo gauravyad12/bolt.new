@@ -3,6 +3,7 @@ import { getModel } from './providers';
 import { MAX_TOKENS } from './constants';
 import { getSystemPrompt } from './prompts';
 import type { AIProvider } from '~/types/ai';
+import type { ChatMode } from '~/lib/stores/chat';
 
 interface ToolResult<Name extends string, Args, Result> {
   toolCallId: string;
@@ -28,15 +29,16 @@ interface StreamTextOptions {
   apiKey: string;
   baseUrl?: string;
   modelId?: string;
+  mode?: ChatMode;
   options?: StreamingOptions;
 }
 
-export function streamText({ messages, env, provider, apiKey, baseUrl, modelId, options }: StreamTextOptions) {
+export function streamText({ messages, env, provider, apiKey, baseUrl, modelId, mode = 'agent', options }: StreamTextOptions) {
   const model = getModel(provider, apiKey, baseUrl, modelId);
   
   return _streamText({
     model,
-    system: getSystemPrompt(),
+    system: getSystemPrompt(undefined, mode),
     maxTokens: MAX_TOKENS,
     headers: provider === 'anthropic' ? {
       'anthropic-beta': 'max-tokens-3-5-sonnet-2024-07-15',

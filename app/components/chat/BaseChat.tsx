@@ -1,11 +1,12 @@
 import type { Message } from 'ai';
 import React, { type RefCallback } from 'react';
 import { ClientOnly } from 'remix-utils/client-only';
+import { useStore } from '@nanostores/react';
 import { Menu } from '~/components/sidebar/Menu.client';
 import { IconButton } from '~/components/ui/IconButton';
-import { ModelSelector } from '~/components/ui/ModelSelector';
 import { Workbench } from '~/components/workbench/Workbench.client';
 import { classNames } from '~/utils/classNames';
+import { chatStore } from '~/lib/stores/chat';
 import { Messages } from './Messages.client';
 import { SendButton } from './SendButton.client';
 
@@ -36,6 +37,14 @@ const EXAMPLE_PROMPTS = [
   { text: 'How do I center a div?' },
 ];
 
+const GENERAL_EXAMPLE_PROMPTS = [
+  { text: 'Explain quantum computing in simple terms' },
+  { text: 'Write a creative story about time travel' },
+  { text: 'Help me plan a healthy meal for the week' },
+  { text: 'What are the benefits of meditation?' },
+  { text: 'Explain the basics of machine learning' },
+];
+
 const TEXTAREA_MIN_HEIGHT = 76;
 
 export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
@@ -59,6 +68,9 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     ref,
   ) => {
     const TEXTAREA_MAX_HEIGHT = chatStarted ? 400 : 200;
+    const { mode } = useStore(chatStore);
+
+    const examplePrompts = mode === 'agent' ? EXAMPLE_PROMPTS : GENERAL_EXAMPLE_PROMPTS;
 
     return (
       <div
@@ -66,6 +78,10 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         className={classNames(
           styles.BaseChat,
           'relative flex h-full w-full overflow-hidden bg-bolt-elements-background-depth-1',
+          {
+            'chat-mode-general': mode === 'general',
+            'chat-mode-agent': mode === 'agent',
+          }
         )}
         data-chat-visible={showChat}
       >
@@ -75,10 +91,13 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
             {!chatStarted && (
               <div id="intro" className="mt-[26vh] max-w-chat mx-auto">
                 <h1 className="text-5xl text-center font-bold text-bolt-elements-textPrimary mb-2">
-                  Where ideas begin
+                  {mode === 'agent' ? 'Where ideas begin' : 'Chat with AI'}
                 </h1>
                 <p className="mb-4 text-center text-bolt-elements-textSecondary">
-                  Bring ideas to life in seconds or get help on existing projects.
+                  {mode === 'agent' 
+                    ? 'Bring ideas to life in seconds or get help on existing projects.'
+                    : 'Ask questions, get answers, and have conversations with AI.'
+                  }
                 </p>
               </div>
             )}
@@ -131,7 +150,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                       minHeight: TEXTAREA_MIN_HEIGHT,
                       maxHeight: TEXTAREA_MAX_HEIGHT,
                     }}
-                    placeholder="How can Bolt help you today?"
+                    placeholder={mode === 'agent' ? "How can Bolt help you today?" : "Ask me anything..."}
                     translate="no"
                   />
                   <ClientOnly>
@@ -174,10 +193,6 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                           </>
                         )}
                       </IconButton>
-                      
-                      <ClientOnly>
-                        {() => <ModelSelector />}
-                      </ClientOnly>
                     </div>
                     {input.length > 3 ? (
                       <div className="text-xs text-bolt-elements-textTertiary">
@@ -192,7 +207,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
             {!chatStarted && (
               <div id="examples" className="relative w-full max-w-xl mx-auto mt-8 flex justify-center">
                 <div className="flex flex-col space-y-2 [mask-image:linear-gradient(to_bottom,black_0%,transparent_180%)] hover:[mask-image:none]">
-                  {EXAMPLE_PROMPTS.map((examplePrompt, index) => {
+                  {examplePrompts.map((examplePrompt, index) => {
                     return (
                       <button
                         key={index}
@@ -210,7 +225,9 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
               </div>
             )}
           </div>
-          <ClientOnly>{() => <Workbench chatStarted={chatStarted} isStreaming={isStreaming} />}</ClientOnly>
+          {mode === 'agent' && (
+            <ClientOnly>{() => <Workbench chatStarted={chatStarted} isStreaming={isStreaming} />}</ClientOnly>
+          )}
         </div>
       </div>
     );

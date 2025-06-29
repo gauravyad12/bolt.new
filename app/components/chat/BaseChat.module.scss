@@ -12,8 +12,30 @@
       opacity: 0;
     }
   }
+
+  &.chat-mode-general {
+    background: linear-gradient(135deg,
+      var(--bolt-elements-background-depth-1) 0%,
+      var(--bolt-elements-background-depth-2) 100%
+    );
+
+    .Chat {
+      border-left: 3px solid var(--bolt-elements-borderColorActive);
+      background: rgba(var(--bolt-elements-bg-depth-1), 0.8);
+      backdrop-filter: blur(10px);
+    }
+  }
+
+  &.chat-mode-agent {
+    background: var(--bolt-elements-background-depth-1);
+
+    .Chat {
+      background: transparent;
+    }
+  }
 }
 
 .Chat {
   opacity: 1;
+  transition: all 0.3s ease;
 }
