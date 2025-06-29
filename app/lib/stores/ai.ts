@@ -1,6 +1,6 @@
-import { atom, map, type MapStore, type WritableAtom } from 'nanostores';
-import type { AIProvider, AIModel, AIProviderConfig, CustomAIConfig, DEFAULT_MODELS } from '~/types/ai';
-import { DEFAULT_MODELS as MODELS } from '~/types/ai';
+import { atom, type WritableAtom } from 'nanostores';
+import type { AIProvider, AIModel, AIProviderConfig, CustomAIConfig } from '~/types/ai';
+import { DEFAULT_MODELS, PROVIDER_ENDPOINTS } from '~/types/ai';
 
 export interface AISettings {
   selectedProvider: AIProvider;
@@ -12,39 +12,76 @@ export interface AISettings {
 const defaultProviders: Record<AIProvider, AIProviderConfig> = {
   anthropic: {
     provider: 'anthropic',
-    models: MODELS.anthropic,
+    models: DEFAULT_MODELS.anthropic,
     enabled: true,
+    description: 'Claude models by Anthropic',
   },
   openai: {
     provider: 'openai',
-    models: MODELS.openai,
+    models: DEFAULT_MODELS.openai,
     enabled: false,
+    description: 'GPT models by OpenAI',
   },
   gemini: {
     provider: 'gemini',
-    models: MODELS.gemini,
+    models: DEFAULT_MODELS.gemini,
     enabled: false,
+    description: 'Gemini models by Google',
   },
   grok: {
     provider: 'grok',
-    models: MODELS.grok,
+    models: DEFAULT_MODELS.grok,
     enabled: false,
+    description: 'Grok models by xAI',
   },
   groq: {
     provider: 'groq',
-    models: MODELS.groq,
+    models: DEFAULT_MODELS.groq,
     enabled: false,
+    description: 'Fast inference with Groq',
   },
   ollama: {
     provider: 'ollama',
-    baseUrl: 'http://localhost:11434',
-    models: MODELS.ollama,
+    baseUrl: PROVIDER_ENDPOINTS.ollama,
+    models: DEFAULT_MODELS.ollama,
     enabled: false,
+    description: 'Local models with Ollama',
+  },
+  huggingface: {
+    provider: 'huggingface',
+    models: DEFAULT_MODELS.huggingface,
+    enabled: false,
+    description: 'Open source models via HuggingFace',
+  },
+  openrouter: {
+    provider: 'openrouter',
+    models: DEFAULT_MODELS.openrouter,
+    enabled: false,
+    description: 'Multiple providers via OpenRouter',
+  },
+  together: {
+    provider: 'together',
+    models: DEFAULT_MODELS.together,
+    enabled: false,
+    description: 'Open source models via Together AI',
+  },
+  deepseek: {
+    provider: 'deepseek',
+    models: DEFAULT_MODELS.deepseek,
+    enabled: false,
+    description: 'DeepSeek models for reasoning and coding',
+  },
+  mistral: {
+    provider: 'mistral',
+    models: DEFAULT_MODELS.mistral,
+    enabled: false,
+    description: 'Mistral AI models',
   },
   custom: {
     provider: 'custom',
     models: [],
     enabled: false,
+    description: 'Custom API endpoints',
   },
 };
 

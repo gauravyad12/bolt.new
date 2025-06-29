@@ -106,6 +106,16 @@ function getAPIKeyFromEnv(provider: AIProvider, env: Env): string | undefined {
       return env.GROQ_API_KEY;
     case 'grok':
       return env.GROK_API_KEY;
+    case 'huggingface':
+      return env.HUGGINGFACE_API_KEY;
+    case 'openrouter':
+      return env.OPENROUTER_API_KEY;
+    case 'together':
+      return env.TOGETHER_API_KEY;
+    case 'deepseek':
+      return env.DEEPSEEK_API_KEY;
+    case 'mistral':
+      return env.MISTRAL_API_KEY;
     default:
       return undefined;
   }

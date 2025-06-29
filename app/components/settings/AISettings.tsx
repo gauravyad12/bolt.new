@@ -17,7 +17,27 @@ export const AISettings = memo(() => {
     grok: 'xAI Grok',
     groq: 'Groq',
     ollama: 'Ollama (Local)',
+    huggingface: 'HuggingFace',
+    openrouter: 'OpenRouter',
+    together: 'Together AI',
+    deepseek: 'DeepSeek',
+    mistral: 'Mistral AI',
     custom: 'Custom Endpoint',
+  };
+
+  const providerColors = {
+    anthropic: 'bg-orange-500',
+    openai: 'bg-green-500',
+    gemini: 'bg-blue-500',
+    grok: 'bg-purple-500',
+    groq: 'bg-yellow-500',
+    ollama: 'bg-gray-500',
+    huggingface: 'bg-yellow-600',
+    openrouter: 'bg-indigo-500',
+    together: 'bg-teal-500',
+    deepseek: 'bg-cyan-500',
+    mistral: 'bg-red-500',
+    custom: 'bg-pink-500',
   };
 
   const handleProviderToggle = (provider: AIProvider) => {
@@ -55,6 +75,7 @@ export const AISettings = memo(() => {
         </h3>
         <p className="text-sm text-bolt-elements-textSecondary mb-6">
           Configure your AI providers and API keys. Enable providers to use their models in chat.
+          You can get API keys from the respective provider websites.
         </p>
       </div>
 
@@ -69,17 +90,19 @@ export const AISettings = memo(() => {
             >
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
-                  <div className={classNames('w-3 h-3 rounded-full', {
-                    'bg-green-500': provider === 'anthropic',
-                    'bg-blue-500': provider === 'openai',
-                    'bg-purple-500': provider === 'gemini',
-                    'bg-orange-500': provider === 'grok',
-                    'bg-yellow-500': provider === 'groq',
-                    'bg-gray-500': provider === 'ollama',
-                  })} />
-                  <span className="font-medium text-bolt-elements-textPrimary">
-                    {providerLabels[provider as AIProvider]}
-                  </span>
+                  <div className={classNames('w-3 h-3 rounded-full', 
+                    providerColors[provider as AIProvider]
+                  )} />
+                  <div>
+                    <span className="font-medium text-bolt-elements-textPrimary">
+                      {providerLabels[provider as AIProvider]}
+                    </span>
+                    {config.description && (
+                      <p className="text-xs text-bolt-elements-textTertiary mt-0.5">
+                        {config.description}
+                      </p>
+                    )}
+                  </div>
                 </div>
                 <label className="flex items-center gap-2">
                   <input
@@ -102,12 +125,12 @@ export const AISettings = memo(() => {
                       type="password"
                       value={config.apiKey || ''}
                       onChange={(e) => handleApiKeyChange(provider as AIProvider, e.target.value)}
-                      placeholder="Enter your API key"
+                      placeholder={`Enter your ${providerLabels[provider as AIProvider]} API key`}
                       className="w-full px-3 py-2 border border-bolt-elements-borderColor rounded-md bg-bolt-elements-background-depth-2 text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary focus:outline-none focus:ring-2 focus:ring-bolt-elements-borderColorActive"
                     />
                   </div>
 
-                  {(provider === 'ollama' || provider === 'custom') && (
+                  {(provider === 'ollama' || provider === 'custom' || provider === 'huggingface' || provider === 'openrouter' || provider === 'together' || provider === 'deepseek' || provider === 'mistral') && (
                     <div>
                       <label className="block text-sm font-medium text-bolt-elements-textSecondary mb-1">
                         Base URL
@@ -116,14 +139,14 @@ export const AISettings = memo(() => {
                         type="url"
                         value={config.baseUrl || ''}
                         onChange={(e) => handleBaseUrlChange(provider as AIProvider, e.target.value)}
-                        placeholder={provider === 'ollama' ? 'http://localhost:11434' : 'https://api.example.com'}
+                        placeholder={getPlaceholderUrl(provider as AIProvider)}
                         className="w-full px-3 py-2 border border-bolt-elements-borderColor rounded-md bg-bolt-elements-background-depth-2 text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary focus:outline-none focus:ring-2 focus:ring-bolt-elements-borderColorActive"
                       />
                     </div>
                   )}
 
                   <div className="text-xs text-bolt-elements-textTertiary">
-                    Available models: {config.models.map(m => m.name).join(', ')}
+                    <strong>Available models:</strong> {config.models.map(m => m.name).join(', ')}
                   </div>
                 </div>
               )}
@@ -190,7 +213,7 @@ export const AISettings = memo(() => {
                   type="url"
                   value={customForm.baseUrl || ''}
                   onChange={(e) => setCustomForm({ ...customForm, baseUrl: e.target.value })}
-                  placeholder="https://api.example.com"
+                  placeholder="https://api.example.com/v1"
                   className="w-full px-3 py-2 border border-bolt-elements-borderColor rounded-md bg-bolt-elements-background-depth-2 text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary focus:outline-none focus:ring-2 focus:ring-bolt-elements-borderColorActive"
                 />
               </div>
@@ -245,6 +268,41 @@ export const AISettings = memo(() => {
           </div>
         )}
       </div>
+
+      {/* API Key Help */}
+      <div className="p-4 bg-bolt-elements-background-depth-1 border border-bolt-elements-borderColor rounded-lg">
+        <h4 className="font-medium text-bolt-elements-textPrimary mb-2">Getting API Keys</h4>
+        <div className="space-y-1 text-sm text-bolt-elements-textSecondary">
+          <p><strong>Anthropic:</strong> <a href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">console.anthropic.com</a></p>
+          <p><strong>OpenAI:</strong> <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">platform.openai.com/api-keys</a></p>
+          <p><strong>Google:</strong> <a href="https://makersuite.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">makersuite.google.com/app/apikey</a></p>
+          <p><strong>Groq:</strong> <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">console.groq.com/keys</a></p>
+          <p><strong>HuggingFace:</strong> <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">huggingface.co/settings/tokens</a></p>
+          <p><strong>OpenRouter:</strong> <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">openrouter.ai/keys</a></p>
+          <p><strong>Together AI:</strong> <a href="https://api.together.xyz/settings/api-keys" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">api.together.xyz/settings/api-keys</a></p>
+          <p><strong>DeepSeek:</strong> <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">platform.deepseek.com/api_keys</a></p>
+          <p><strong>Mistral:</strong> <a href="https://console.mistral.ai/api-keys/" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">console.mistral.ai/api-keys</a></p>
+        </div>
+      </div>
     </div>
   );
 });
+
+function getPlaceholderUrl(provider: AIProvider): string {
+  switch (provider) {
+    case 'ollama':
+      return 'http://localhost:11434/v1';
+    case 'huggingface':
+      return 'https://api-inference.huggingface.co/v1';
+    case 'openrouter':
+      return 'https://openrouter.ai/api/v1';
+    case 'together':
+      return 'https://api.together.xyz/v1';
+    case 'deepseek':
+      return 'https://api.deepseek.com/v1';
+    case 'mistral':
+      return 'https://api.mistral.ai/v1';
+    default:
+      return 'https://api.example.com/v1';
+  }
+}
