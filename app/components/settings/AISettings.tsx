@@ -273,15 +273,15 @@ export const AISettings = memo(() => {
       <div className="p-4 bg-bolt-elements-background-depth-1 border border-bolt-elements-borderColor rounded-lg">
         <h4 className="font-medium text-bolt-elements-textPrimary mb-2">Getting API Keys</h4>
         <div className="space-y-1 text-sm text-bolt-elements-textSecondary">
-          <p><strong>Anthropic:</strong> <a href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">console.anthropic.com</a></p>
-          <p><strong>OpenAI:</strong> <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">platform.openai.com/api-keys</a></p>
-          <p><strong>Google:</strong> <a href="https://makersuite.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">makersuite.google.com/app/apikey</a></p>
-          <p><strong>Groq:</strong> <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">console.groq.com/keys</a></p>
-          <p><strong>HuggingFace:</strong> <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">huggingface.co/settings/tokens</a></p>
-          <p><strong>OpenRouter:</strong> <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">openrouter.ai/keys</a></p>
-          <p><strong>Together AI:</strong> <a href="https://api.together.xyz/settings/api-keys" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">api.together.xyz/settings/api-keys</a></p>
-          <p><strong>DeepSeek:</strong> <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">platform.deepseek.com/api_keys</a></p>
-          <p><strong>Mistral:</strong> <a href="https://console.mistral.ai/api-keys/" target="_blank" rel="noopener noreferrer" className="text-bolt-elements-messages-linkColor hover:underline">console.mistral.ai/api-keys</a></p>
+          <p><strong>Anthropic:</strong> <a href="https://console.anthropic.com/" target=\"_blank" rel="noopener noreferrer\" className="text-bolt-elements-messages-linkColor hover:underline">console.anthropic.com</a></p>
+          <p><strong>OpenAI:</strong> <a href="https://platform.openai.com/api-keys" target=\"_blank" rel="noopener noreferrer\" className="text-bolt-elements-messages-linkColor hover:underline">platform.openai.com/api-keys</a></p>
+          <p><strong>Google:</strong> <a href="https://makersuite.google.com/app/apikey" target=\"_blank" rel="noopener noreferrer\" className="text-bolt-elements-messages-linkColor hover:underline">makersuite.google.com/app/apikey</a></p>
+          <p><strong>Groq:</strong> <a href="https://console.groq.com/keys" target=\"_blank" rel="noopener noreferrer\" className="text-bolt-elements-messages-linkColor hover:underline">console.groq.com/keys</a></p>
+          <p><strong>HuggingFace:</strong> <a href="https://huggingface.co/settings/tokens" target=\"_blank" rel="noopener noreferrer\" className="text-bolt-elements-messages-linkColor hover:underline">huggingface.co/settings/tokens</a></p>
+          <p><strong>OpenRouter:</strong> <a href="https://openrouter.ai/keys" target=\"_blank" rel="noopener noreferrer\" className="text-bolt-elements-messages-linkColor hover:underline">openrouter.ai/keys</a></p>
+          <p><strong>Together AI:</strong> <a href="https://api.together.xyz/settings/api-keys" target=\"_blank" rel="noopener noreferrer\" className="text-bolt-elements-messages-linkColor hover:underline">api.together.xyz/settings/api-keys</a></p>
+          <p><strong>DeepSeek:</strong> <a href="https://platform.deepseek.com/api_keys" target=\"_blank" rel="noopener noreferrer\" className="text-bolt-elements-messages-linkColor hover:underline">platform.deepseek.com/api_keys</a></p>
+          <p><strong>Mistral:</strong> <a href="https://console.mistral.ai/api-keys/" target=\"_blank" rel="noopener noreferrer\" className="text-bolt-elements-messages-linkColor hover:underline">console.mistral.ai/api-keys</a></p>
         </div>
       </div>
     </div>
