@@ -1,18 +1,29 @@
 import { useStore } from '@nanostores/react';
+import { useState } from 'react';
 import { chatStore } from '~/lib/stores/chat';
 import { workbenchStore } from '~/lib/stores/workbench';
 import { classNames } from '~/utils/classNames';
+import { IconButton } from '~/components/ui/IconButton';
+import { SettingsModal } from '~/components/settings/SettingsModal';
 
 interface HeaderActionButtonsProps {}
 
 export function HeaderActionButtons({}: HeaderActionButtonsProps) {
   const showWorkbench = useStore(workbenchStore.showWorkbench);
   const { showChat } = useStore(chatStore);
+  const [showSettings, setShowSettings] = useState(false);
 
   const canHideChat = showWorkbench || !showChat;
 
   return (
-    <div className="flex">
+    <div className="flex items-center gap-2">
+      <IconButton
+        icon="i-ph:gear"
+        title="Settings"
+        onClick={() => setShowSettings(true)}
+        className="text-bolt-elements-item-contentDefault hover:text-bolt-elements-item-contentActive"
+      />
+      
       <div className="flex border border-bolt-elements-borderColor rounded-md overflow-hidden">
         <Button
           active={showChat}
@@ -39,6 +50,8 @@ export function HeaderActionButtons({}: HeaderActionButtonsProps) {
           <div className="i-ph:code-bold" />
         </Button>
       </div>
+
+      <SettingsModal isOpen={showSettings} onClose={() => setShowSettings(false)} />
     </div>
   );
 }

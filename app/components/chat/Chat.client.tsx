@@ -7,6 +7,7 @@ import { cssTransition, toast, ToastContainer } from 'react-toastify';
 import { useMessageParser, usePromptEnhancer, useShortcuts, useSnapScroll } from '~/lib/hooks';
 import { useChatHistory } from '~/lib/persistence';
 import { chatStore } from '~/lib/stores/chat';
+import { aiSettingsStore, getCurrentModel } from '~/lib/stores/ai';
 import { workbenchStore } from '~/lib/stores/workbench';
 import { fileModificationsToHTML } from '~/utils/diff';
 import { cubicEasingFn } from '~/utils/easings';
@@ -68,6 +69,7 @@ export const ChatImpl = memo(({ initialMessages, storeMessageHistory }: ChatProp
   useShortcuts();
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const aiSettings = useStore(aiSettingsStore);
 
   const [chatStarted, setChatStarted] = useState(initialMessages.length > 0);
 
@@ -75,8 +77,17 @@ export const ChatImpl = memo(({ initialMessages, storeMessageHistory }: ChatProp
 
   const [animationScope, animate] = useAnimate();
 
+  const currentModel = getCurrentModel();
+  const currentProvider = aiSettings.providers[aiSettings.selectedProvider];
+
   const { messages, isLoading, input, handleInputChange, setInput, stop, append } = useChat({
     api: '/api/chat',
+    body: {
+      provider: aiSettings.selectedProvider,
+      apiKey: currentProvider?.apiKey,
+      baseUrl: currentProvider?.baseUrl,
+      modelId: aiSettings.selectedModel,
+    },
     onError: (error) => {
       logger.error('Request failed\n\n', error);
       toast.error('There was an error processing your request');
@@ -150,6 +161,12 @@ export const ChatImpl = memo(({ initialMessages, storeMessageHistory }: ChatProp
     const _input = messageInput || input;
 
     if (_input.length === 0 || isLoading) {
+      return;
+    }
+
+    // Check if we have a valid model selected
+    if (!currentModel || !currentProvider?.apiKey) {
+      toast.error('Please configure an AI provider and select a model in settings');
       return;
     }
 
