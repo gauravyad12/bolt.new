@@ -3,6 +3,8 @@ import { allowedHTMLElements } from '~/utils/markdown';
 import { stripIndents } from '~/utils/stripIndent';
 import type { ChatMode } from '~/lib/stores/chat';
 
+export const CONTINUE_PROMPT = 'Continue your response';
+
 export const getSystemPrompt = (cwd: string = WORK_DIR, mode: ChatMode = 'agent') => {
   if (mode === 'general') {
     return getGeneralSystemPrompt();
